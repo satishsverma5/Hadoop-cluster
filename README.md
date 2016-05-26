@@ -55,7 +55,7 @@ ubuntu@master:~$ cat /proc/sys/net/ipv6/conf/all/disable_ipv6
 (Must do: sudo sysctl -p for these changes to take effect).
 
 # Prepare to Install Hadoop.
-### Create user group "hadoop".
+### STEP-1. Create user group "hadoop".
 ```
 ubuntu@master:~$ sudo addgroup hadoop
 Adding group `hadoop' (GID 1000) ...
@@ -78,7 +78,7 @@ Enter the new value, or press ENTER for the default
     Other []: 
 Is the information correct? [Y/n] Y
 ```
-### Download Hadoop 2.7.0 and extract it to /opt/ directory on All Node
+### STEP-2. Download Hadoop 2.7.0 and extract it to /opt/ directory on All Node
 Below are the commands,
 ```
 ubuntu@master:~$ cd /opt/
@@ -88,7 +88,17 @@ ubuntu@master:~$ sudo ln -s /opt/hadoop-2.7.0 /opt/hadoop
 ubuntu@master:~$ sudo chown hduser.hadoop /opt/hadoop
 ubuntu@master:~$ sudo chown hduser.hadoop /opt/hadoop-2.7.0
 ```
-### Configure Variables in hduser and Reload the Configuration
+# STEP-3. Create Hadoop data directories
+```
+ubuntu@master:~$ sudo mkdir -p /data/hadoop-data/nn 
+ubuntu@master:~$ sudo mkdir -p /data/hadoop-data/snn 
+ubuntu@master:~$ sudo mkdir -p /data/hadoop-data/dn 
+ubuntu@master:~$ sudo mkdir -p /data/hadoop-data/mapred/system 
+ubuntu@master:~$ sudo mkdir -p /data/hadoop-data/mapred/local
+ubuntu@master:~$ sudo chown -R hduser.hadoop /data/hadoop-data
+```
+
+### STEP-4. Configure Variables in hduser
 #
 ```
 ubuntu@master:~$  su - hduser
@@ -117,18 +127,10 @@ Reload Configuration using below command.
 ```
 hduser@master:~$ source .bashrc
 ```
-# Create Hadoop data directories
-```
-$ mkdir -p /data/hadoop-data/nn 
-$ mkdir -p /data/hadoop-data/snn 
-$ mkdir -p /data/hadoop-data/dn 
-$ mkdir -p /data/hadoop-data/mapred/system 
-$ mkdir -p /data/hadoop-data/mapred/local
-```
-# Update Configuration Files
+# STEP-5. Update Configuration Files
 Now edit $HADOOP_HOME/etc/hadoop/hadoop-env.sh file and set JAVA_HOME environment variable with JDK base directory path.
 ```
-export JAVA_HOME=/usr/java/jdk1.8.0_40/
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle
 ```
 
 Modify core-site.xml on Master and Slave nodes with following options. Master and slave nodes should use the same value for this property: fs.defaultFS, and should be pointing to master node only.
