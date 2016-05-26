@@ -28,13 +28,37 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)
 ```
 
 # Prepare to Install Hadoop.
-### Download Hadoop 2.6.0 and extract it to /opt/ directory on Master Node
+### Create user group "hadoop".
+```
+# sudo addgroup hadoop
+Adding group `hadoop' (GID 1000) ...
+Done.
+
+# sudo adduser --ingroup hadoop hduser
+Adding user `hduser' ...
+Adding new user `hduser' (1001) with group `hadoop' ...
+Creating home directory `/home/hduser' ...
+Copying files from `/etc/skel' ...
+Enter new UNIX password: (Keep same on all nodes for convenience)
+Retype new UNIX password: 
+passwd: password updated successfully
+Changing the user information for hduser
+Enter the new value, or press ENTER for the default
+    Full Name []: 
+    Room Number []: 
+    Work Phone []: 
+    Home Phone []: 
+    Other []: 
+Is the information correct? [Y/n] Y
+```
+### Download Hadoop 2.7.0 and extract it to /opt/ directory on All Node
 Below are the commands,
 ```
 $ cd /opt/
 $ wget http://mirrors.sonic.net/apache/hadoop/common/hadoop-2.7.0/hadoop-2.7.0.tar.gz
 $ tar –xvf hadoop-2.7.0.tar.gz
 ```
+### Configure Variables and Reload the Configuration
 
 
 
