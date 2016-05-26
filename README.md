@@ -139,7 +139,7 @@ Modify core-site.xml on Master and Slave nodes with following options. Master an
 ```
 hduser@master: vim /opt/hadoop/etc/hadoop/core-site.xml
 ```
-Insert between <configuration> tags:
+Insert between "<configuration>" tags:
 ```
     <property>
         <name>hadoop.tmp.dir</name>
@@ -149,9 +149,35 @@ Insert between <configuration> tags:
 
     <property>
         <name>fs.default.name</name>
-        <value>hdfs://master.dev.nazara.com:9000</value>
+        <value>hdfs://master:9000</value>
     </property>
 
+```
+Modify mapred-site.xml on Master node only with following options.
+```
+hduser@master: vim /opt/hadoop/etc/hadoop/mapred-site.xml
+```
+```
+  <property>
+<!--     <name>mapred.job.tracker</name> -->
+     <name>mapreduce.jobtracker.http.address</name>
+     <value>master.dev.nazara.com:50030</value>
+      <description>The host and port that the MapReduce job tracker runs
+      at.  If "local", then jobs are run in-process as a single map
+      and reduce task.
+      </description>
+    </property>
+
+    <property>
+        <name>mapreduce.framework.name</name>
+        <value>yarn</value>
+    </property>
+```
+Modify hdfs-site.xml on Master and Slave Nodes. Before that, as hduser, create the following directories on all the nodes, master and slaves.
+```
+cd /home/hduser/hadoop
+hduser@ubuntu:/home/hduser/hadoop$ mkdir -p ./yarn_data/hdfs/namenode
+hduser@ubuntu:/home/hduser/hadoop$ mkdir -p ./yarn_data/hdfs/datanode
 ```
 
 ```
