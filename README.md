@@ -30,11 +30,11 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)
 # Prepare to Install Hadoop.
 ### Create user group "hadoop".
 ```
-# sudo addgroup hadoop
+$ sudo addgroup hadoop
 Adding group `hadoop' (GID 1000) ...
 Done.
 
-# sudo adduser --ingroup hadoop hduser
+$ sudo adduser --ingroup hadoop hduser
 Adding user `hduser' ...
 Adding new user `hduser' (1001) with group `hadoop' ...
 Creating home directory `/home/hduser' ...
@@ -55,11 +55,28 @@ Is the information correct? [Y/n] Y
 Below are the commands,
 ```
 $ cd /opt/
-$ wget http://mirrors.sonic.net/apache/hadoop/common/hadoop-2.7.0/hadoop-2.7.0.tar.gz
-$ tar –xvf hadoop-2.7.0.tar.gz
+$ sudo wget http://mirrors.sonic.net/apache/hadoop/common/hadoop-2.7.0/hadoop-2.7.0.tar.gz
+$ sudo tar –xvf hadoop-2.7.0.tar.gz
+$ sudo ln -s /opt/hadoop-2.7.0 /opt/hadoop
+$ sudo chown hduser.hadoop /opt/hadoop
+$ sudo chown hduser.hadoop /opt/hadoop-2.7.0
 ```
-### Configure Variables and Reload the Configuration
+### Configure Variables in hduser and Reload the Configuration
+# 
 
+
+
+create topic (sample1)
+./bin/kafka-topics.sh --create --zookeeper master.dev.nazara.com:2181 --replication-factor 1 --partitions 1 --topic sample1
+
+show topic list
+./bin/kafka-topics.sh --list --zookeeper master.dev.nazara.com:2181
+
+produc message on topic sample1
+./bin/kafka-console-producer.sh --broker-list master.dev.nazara.com:9092  --topic sample
+
+check message 
+./bin/kafka-console-consumer.sh --zookeeper master.dev.nazara.com:2181 --topic sample1 --from-beginning
 
 
 
