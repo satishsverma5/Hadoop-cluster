@@ -27,6 +27,30 @@ Java(TM) SE Runtime Environment (build 1.8.0_91-b14)
 Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)
 ```
 
+# Disabling IPV6 on Ubuntu
+```
+root@ztg-master:~# sudo vim /etc/sysctl.conf
+```
+Add the following lines at the end:
+```
+#disable ipv6
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+```
+Check:
+```
+root@ztg-master:~# cat /proc/sys/net/ipv6/conf/all/disable_ipv6 
+0
+root@ztg-master:~# sudo sysctl -p
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+root@ztg-master:~# cat /proc/sys/net/ipv6/conf/all/disable_ipv6 
+1
+```
+(Must do: sudo sysctl -p for these changes to take effect).
+
 # Prepare to Install Hadoop.
 ### Create user group "hadoop".
 ```
@@ -64,12 +88,13 @@ $ sudo chown hduser.hadoop /opt/hadoop-2.7.0
 ### Configure Variables in hduser and Reload the Configuration
 #
 ```
-$ su - hduser
+ubuntu@master:/home/ubuntu$  su - hduser
 Password:
 ```
 append following values at end of file
 ```
-# vim .bashrc
+hduser@ztg-master:~$ vim .bashrc
+
 #HADOOP VARIABLES START
 export JAVA_HOME=/usr/lib/jvm/java-8-oracle
 export HADOOP_HOME=/opt/hadoop
@@ -94,7 +119,7 @@ export YARN_CONF_DIR=$HADOOP_INSTALL/etc/hadoop
 ```
 Reload Configuration using below command.
 ```
-source .bashrc
+hduser@master:~$ source .bashrc
 ```
 # Create Hadoop data directories
 ```
@@ -104,11 +129,56 @@ $ mkdir -p /data/hadoop-data/dn
 $ mkdir -p /data/hadoop-data/mapred/system 
 $ mkdir -p /data/hadoop-data/mapred/local
 ```
-
+# Update Configuration Files
 Now edit $HADOOP_HOME/etc/hadoop/hadoop-env.sh file and set JAVA_HOME environment variable with JDK base directory path.
 ```
 export JAVA_HOME=/usr/java/jdk1.8.0_40/
 ```
+
+Modify core-site.xml on Master and Slave nodes with following options. Master and slave nodes should use the same value for this property: fs.defaultFS, and should be pointing to master node only.
+```
+hduser@master: vim /opt/hadoop/etc/hadoop/core-site.xml
+```
+Insert between <configuration> tags:
+```
+    <property>
+        <name>hadoop.tmp.dir</name>
+        <value>/data/tmp/hadoop</value>
+        <description>A base for other temporary directories.</description>
+    </property>
+
+    <property>
+        <name>fs.default.name</name>
+        <value>hdfs://master.dev.nazara.com:9000</value>
+    </property>
+
+```
+
+```
+$ hdfs namenode –format
+```
+# Step 7 : Commands for starting and stopping Hadoop Cluster
+
+### Start/Stop HDFS using below commands
+```
+sh $HADOOP_HOME/sbin/start-dfs.sh
+sh $HADOOP_HOME/sbin/stop-dfs.sh
+```
+### Start/Stop YARN services using below commands
+```
+sh $HADOOP_HOME/sbin/start-yarn.sh
+sh $HADOOP_HOME/sbin/stop-yarn.sh
+```
+
+
+
+Now you can access Hadoop Services in Browser
+
+Name Node: http://master:50070/
+YARN Services: http://master:8088/
+Secondary Name Node: http://master:50090/
+Data Node 1: http://master:50075/
+Data Node 2: http://slave1:50075/
 
 
 create topic (sample1)
