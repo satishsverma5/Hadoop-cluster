@@ -14,10 +14,28 @@ We called them: master (IP addr: x.y.z.156) slave1 (IP addr: x.y.z.157) and slav
 
 # Install Java JDK 8
 ```
-sudo apt-add-repository ppa:webupd8team/java
-sudo apt-get update
-sudo apt-get install -y oracle-java8-installer
+$ sudo apt-add-repository ppa:webupd8team/java
+$ sudo apt-get update
+$ sudo apt-get install -y oracle-java8-installer
+```
+Check Java Version
+```
+$ java -version
+
+java version "1.8.0_91"
+Java(TM) SE Runtime Environment (build 1.8.0_91-b14)
+Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)
 ```
 
 # Prepare to Install Hadoop.
+### Download Hadoop 2.6.0 and extract it to /opt/ directory on Master Node
+Below are the commands,
+```
+$ cd /opt/
+$ wget http://mirrors.sonic.net/apache/hadoop/common/hadoop-2.7.0/hadoop-2.7.0.tar.gz
+$ tar –xvf hadoop-2.7.0.tar.gz
+```
+
+
+
 
