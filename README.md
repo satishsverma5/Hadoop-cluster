@@ -14,13 +14,13 @@ We called them: master (IP addr: x.y.z.156) slave1 (IP addr: x.y.z.157) and slav
 
 # Install Java JDK 8
 ```
-$ sudo apt-add-repository ppa:webupd8team/java
-$ sudo apt-get update
-$ sudo apt-get install -y oracle-java8-installer
+ubuntu@master:~$ sudo apt-add-repository ppa:webupd8team/java
+ubuntu@master:~$ sudo apt-get update
+ubuntu@master:~$ sudo apt-get install -y oracle-java8-installer
 ```
 Check Java Version
 ```
-$ java -version
+ubuntu@master:~$ java -version
 
 java version "1.8.0_91"
 Java(TM) SE Runtime Environment (build 1.8.0_91-b14)
@@ -29,7 +29,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)
 
 # Disabling IPV6 on Ubuntu
 ```
-root@ztg-master:~# sudo vim /etc/sysctl.conf
+ubuntu@master:~$ sudo vim /etc/sysctl.conf
 ```
 Add the following lines at the end:
 ```
@@ -40,13 +40,16 @@ net.ipv6.conf.lo.disable_ipv6 = 1
 ```
 Check:
 ```
-root@ztg-master:~# cat /proc/sys/net/ipv6/conf/all/disable_ipv6 
+ubuntu@master:~$ cat /proc/sys/net/ipv6/conf/all/disable_ipv6 
 0
-root@ztg-master:~# sudo sysctl -p
+
+ubuntu@master:~$ sudo sysctl -p
+
 net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv6.conf.lo.disable_ipv6 = 1
-root@ztg-master:~# cat /proc/sys/net/ipv6/conf/all/disable_ipv6 
+
+ubuntu@master:~$ cat /proc/sys/net/ipv6/conf/all/disable_ipv6 
 1
 ```
 (Must do: sudo sysctl -p for these changes to take effect).
@@ -54,11 +57,11 @@ root@ztg-master:~# cat /proc/sys/net/ipv6/conf/all/disable_ipv6
 # Prepare to Install Hadoop.
 ### Create user group "hadoop".
 ```
-$ sudo addgroup hadoop
+ubuntu@master:~$ sudo addgroup hadoop
 Adding group `hadoop' (GID 1000) ...
 Done.
 
-$ sudo adduser --ingroup hadoop hduser
+ubuntu@master:~$ sudo adduser --ingroup hadoop hduser
 Adding user `hduser' ...
 Adding new user `hduser' (1001) with group `hadoop' ...
 Creating home directory `/home/hduser' ...
@@ -78,22 +81,22 @@ Is the information correct? [Y/n] Y
 ### Download Hadoop 2.7.0 and extract it to /opt/ directory on All Node
 Below are the commands,
 ```
-$ cd /opt/
-$ sudo wget http://mirrors.sonic.net/apache/hadoop/common/hadoop-2.7.0/hadoop-2.7.0.tar.gz
-$ sudo tar –xvf hadoop-2.7.0.tar.gz
-$ sudo ln -s /opt/hadoop-2.7.0 /opt/hadoop
-$ sudo chown hduser.hadoop /opt/hadoop
-$ sudo chown hduser.hadoop /opt/hadoop-2.7.0
+ubuntu@master:~$ cd /opt/
+ubuntu@master:~$ sudo wget http://mirrors.sonic.net/apache/hadoop/common/hadoop-2.7.0/hadoop-2.7.0.tar.gz
+ubuntu@master:~$ sudo tar –xvf hadoop-2.7.0.tar.gz
+ubuntu@master:~$ sudo ln -s /opt/hadoop-2.7.0 /opt/hadoop
+ubuntu@master:~$ sudo chown hduser.hadoop /opt/hadoop
+ubuntu@master:~$ sudo chown hduser.hadoop /opt/hadoop-2.7.0
 ```
 ### Configure Variables in hduser and Reload the Configuration
 #
 ```
-ubuntu@master:/home/ubuntu$  su - hduser
+ubuntu@master:~$  su - hduser
 Password:
 ```
 append following values at end of file
 ```
-hduser@ztg-master:~$ vim .bashrc
+hduser@master:~$ vim .bashrc
 
 #HADOOP VARIABLES START
 export JAVA_HOME=/usr/lib/jvm/java-8-oracle
@@ -105,16 +108,9 @@ export HADOOP_MAPRED_HOME=$HADOOP_INSTALL
 export HADOOP_COMMON_HOME=$HADOOP_INSTALL
 export HADOOP_HDFS_HOME=$HADOOP_INSTALL
 export YARN_HOME=$HADOOP_INSTALL
+export YARN_CONF_DIR=$HADOOP_INSTALL/etc/hadoop
 export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_INSTALL/lib/native
 export HADOOP_OPTS="-Djava.library.path=$HADOOP_INSTALL/lib"
-#HADOOP VARIABLES END
-
-#HADOOP VARIABLES START
-export JAVA_HOME=/usr/lib/jvm/java-8-oracle
-export HADOOP_HOME=/opt/hadoop
-export HADOOP_INSTALL=/opt/hadoop
-export YARN_HOME=$HADOOP_INSTALL
-export YARN_CONF_DIR=$HADOOP_INSTALL/etc/hadoop
 #HADOOP VARIABLES END
 ```
 Reload Configuration using below command.
