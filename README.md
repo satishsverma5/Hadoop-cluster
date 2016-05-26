@@ -88,7 +88,7 @@ ubuntu@master:~$ sudo ln -s /opt/hadoop-2.7.0 /opt/hadoop
 ubuntu@master:~$ sudo chown hduser.hadoop /opt/hadoop
 ubuntu@master:~$ sudo chown hduser.hadoop /opt/hadoop-2.7.0
 ```
-# STEP-3. Create Hadoop data directories
+### STEP-3. Create Hadoop data directories
 ```
 ubuntu@master:~$ sudo mkdir -p /data/hadoop-data/nn 
 ubuntu@master:~$ sudo mkdir -p /data/hadoop-data/snn 
@@ -127,7 +127,7 @@ Reload Configuration using below command.
 ```
 hduser@master:~$ source .bashrc
 ```
-# STEP-5. Update Configuration Files
+### STEP-5. Update Configuration Files
 Now edit $HADOOP_HOME/etc/hadoop/hadoop-env.sh file and set JAVA_HOME environment variable with JDK base directory path.
 ```
 export JAVA_HOME=/usr/lib/jvm/java-8-oracle
@@ -136,9 +136,9 @@ export JAVA_HOME=/usr/lib/jvm/java-8-oracle
 Modify core-site.xml on Master and Slave nodes with following options. Master and slave nodes should use the same value for this property: fs.defaultFS, and should be pointing to master node only.
 ```
 hduser@master: vim /opt/hadoop/etc/hadoop/core-site.xml
-```
-Insert between "<configuration>" tags:
-```
+
+# Insert between "<configuration>  </configuration>" tags:
+
     <property>
         <name>hadoop.tmp.dir</name>
         <value>/data/tmp/hadoop</value>
@@ -154,16 +154,16 @@ Insert between "<configuration>" tags:
 Modify mapred-site.xml on Master node only with following options.
 ```
 hduser@master: vim /opt/hadoop/etc/hadoop/mapred-site.xml
-```
-```
+
+# Insert between "<configuration>  </configuration>" tags:
+
   <property>
-<!--     <name>mapred.job.tracker</name> -->
-     <name>mapreduce.jobtracker.http.address</name>
-     <value>master.dev.nazara.com:50030</value>
-      <description>The host and port that the MapReduce job tracker runs
-      at.  If "local", then jobs are run in-process as a single map
-      and reduce task.
-      </description>
+        <name>mapreduce.jobtracker.http.address</name>
+        <value>master.dev.nazara.com:50030</value>
+        <description>The host and port that the MapReduce job tracker runs
+            at.  If "local", then jobs are run in-process as a single map
+            and reduce task.
+        </description>
     </property>
 
     <property>
