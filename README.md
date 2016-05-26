@@ -62,8 +62,53 @@ $ sudo chown hduser.hadoop /opt/hadoop
 $ sudo chown hduser.hadoop /opt/hadoop-2.7.0
 ```
 ### Configure Variables in hduser and Reload the Configuration
-# 
+#
+```
+$ su - hduser
+Password:
+```
+append following values at end of file
+```
+# vim .bashrc
+#HADOOP VARIABLES START
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+export HADOOP_HOME=/opt/hadoop
+export HADOOP_INSTALL=/opt/hadoop
+export PATH=$PATH:$HADOOP_INSTALL/bin
+export PATH=$PATH:$HADOOP_INSTALL/sbin
+export HADOOP_MAPRED_HOME=$HADOOP_INSTALL
+export HADOOP_COMMON_HOME=$HADOOP_INSTALL
+export HADOOP_HDFS_HOME=$HADOOP_INSTALL
+export YARN_HOME=$HADOOP_INSTALL
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_INSTALL/lib/native
+export HADOOP_OPTS="-Djava.library.path=$HADOOP_INSTALL/lib"
+#HADOOP VARIABLES END
 
+#HADOOP VARIABLES START
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+export HADOOP_HOME=/opt/hadoop
+export HADOOP_INSTALL=/opt/hadoop
+export YARN_HOME=$HADOOP_INSTALL
+export YARN_CONF_DIR=$HADOOP_INSTALL/etc/hadoop
+#HADOOP VARIABLES END
+```
+Reload Configuration using below command.
+```
+source .bashrc
+```
+# Create Hadoop data directories
+```
+$ mkdir -p /data/hadoop-data/nn 
+$ mkdir -p /data/hadoop-data/snn 
+$ mkdir -p /data/hadoop-data/dn 
+$ mkdir -p /data/hadoop-data/mapred/system 
+$ mkdir -p /data/hadoop-data/mapred/local
+```
+
+Now edit $HADOOP_HOME/etc/hadoop/hadoop-env.sh file and set JAVA_HOME environment variable with JDK base directory path.
+```
+export JAVA_HOME=/usr/java/jdk1.8.0_40/
+```
 
 
 create topic (sample1)
