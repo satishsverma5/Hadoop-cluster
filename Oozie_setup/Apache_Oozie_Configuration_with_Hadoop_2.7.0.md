@@ -1,10 +1,10 @@
-### Apache Oozie Configuration with Hadoop 2.7.0
+# Apache Oozie Configuration with Hadoop 2.7.0
 
 
 Install Oozie with Hadoop 2+ environment.
 
 ## Step 1: 
-# Download Oozie 4.1 from the Apache URL and save the tarball to any directory
+### Download Oozie 4.1 from the Apache URL and save the tarball to any directory
 ```
 cd ~/Downloads
 tar -zxf oozie-4.1.0.tar.gz
