@@ -45,7 +45,7 @@ cd libext
 curl -O http://archive.cloudera.com/gplextras/misc/ext-2.2.zip
 ```
 ### Step 7:
-#install zip  if it is not installed 
+# Install zip  if it is not installed 
 ```
 apt-get install zip
 ```
