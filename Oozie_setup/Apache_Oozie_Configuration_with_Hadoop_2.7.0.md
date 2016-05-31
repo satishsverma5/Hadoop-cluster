@@ -65,6 +65,9 @@ cd ..
 ```
  For Derby metastore:
 ./bin/ooziedb.sh create -sqlfile oozie.sql -run
+or 
+./bin/ooziedb.sh create -run
+
 For MySQL metastore: login to MySQL and run create the database and schema for repository
 mysql>CREATE DATABASE OOZIEDB;
 mysql>CREATE USER "OOZIE" IDENTIFIED BY "PASSWORD";
