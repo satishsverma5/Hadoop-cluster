@@ -18,6 +18,13 @@ ubuntu@master:~$ sudo apt-add-repository ppa:webupd8team/java
 ubuntu@master:~$ sudo apt-get update
 ubuntu@master:~$ sudo apt-get install -y oracle-java8-installer
 ```
+set ENV for all use
+```
+vim /etc/bash.bashrc
+# append JAVA_HOME values at end of file
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+```
+
 Check Java Version
 ```
 ubuntu@master:~$ java -version
