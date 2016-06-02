@@ -51,7 +51,7 @@ ubuntu@master:~$ cat /proc/sys/net/ipv6/conf/all/disable_ipv6
 0
 
 ubuntu@master:~$ sudo sysctl -p
-
+# (Must do: sudo sysctl -p for these changes to take effect).
 net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv6.conf.lo.disable_ipv6 = 1
@@ -59,7 +59,7 @@ net.ipv6.conf.lo.disable_ipv6 = 1
 ubuntu@master:~$ cat /proc/sys/net/ipv6/conf/all/disable_ipv6 
 1
 ```
-(Must do: sudo sysctl -p for these changes to take effect).
+Note: 0 means it's enabled and 1 - disabled.
 
 # Prepare to Install Hadoop.
 ### STEP-1. Create user group "hadoop".
