@@ -166,7 +166,7 @@ hduser@master: vim /opt/hadoop/etc/hadoop/mapred-site.xml
 
   <property>
         <name>mapreduce.jobtracker.http.address</name>
-        <value>master.dev.nazara.com:50030</value>
+        <value>master.dev.NZ.com:50030</value>
         <description>The host and port that the MapReduce job tracker runs
             at.  If "local", then jobs are run in-process as a single map
             and reduce task.
@@ -213,16 +213,16 @@ Data Node 2: http://slave1:50075/
 
 
 create topic (sample1)
-./bin/kafka-topics.sh --create --zookeeper master.dev.nazara.com:2181 --replication-factor 1 --partitions 1 --topic sample1
+./bin/kafka-topics.sh --create --zookeeper master.dev.NZ.com:2181 --replication-factor 1 --partitions 1 --topic sample1
 
 show topic list
-./bin/kafka-topics.sh --list --zookeeper master.dev.nazara.com:2181
+./bin/kafka-topics.sh --list --zookeeper master.dev.NZ.com:2181
 
 produc message on topic sample1
-./bin/kafka-console-producer.sh --broker-list master.dev.nazara.com:9092  --topic sample
+./bin/kafka-console-producer.sh --broker-list master.dev.NZ.com:9092  --topic sample
 
 check message 
-./bin/kafka-console-consumer.sh --zookeeper master.dev.nazara.com:2181 --topic sample1 --from-beginning
+./bin/kafka-console-consumer.sh --zookeeper master.dev.NZ.com:2181 --topic sample1 --from-beginning
 
 
 
