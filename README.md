@@ -226,6 +226,61 @@ Modify hdfs-site.xml on Master and Slave Nodes. Before that, as hduser, create t
         <value>file:///data/hadoop-data/snn</value>
     </property>
 ```
+Modify yarn-site.xml on Master and Slave Nodes. Before that, as hduser, create the following directories on all the nodes, master and slaves.
+```
+    <property>
+        <name>yarn.resourcemanager.hostname</name>
+        <value>master</value>
+    </property>
+    <property>
+        <name>yarn.nodemanager.aux-services</name>
+        <value>mapreduce_shuffle</value>
+    </property>
+    <property>
+        <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
+        <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+    </property>
+<!--<property>
+        <name>yarn.nodemanager.aux-services</name>
+        <value>spark_shuffle</value>
+    </property>
+    <property>
+        <name>yarn.nodemanager.aux-services.spark_shuffle.class</name>
+        <value>org.apache.spark.network.yarn.YarnShuffleService</value>
+    </property> 
+-->
+    <property>
+        <name>yarn.resourcemanager.resource-tracker.address</name>
+        <value>master:8031</value>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.scheduler.address</name>
+        <value>master:8030</value>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.address</name>
+        <value>master:8032</value>
+    </property>
+    <property>
+        <description>Whether to enable log aggregation</description>
+        <name>yarn.log-aggregation-enable</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>yarn.nodemanager.resource.memory-mb</name>
+        <value>204800</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.maximum-allocation-mb</name>
+        <value>204800</value>
+    </property>
+    <property>
+        <name>yarn.nodemanager.delete.debug-delay-sec</name>
+        <value>600</value>
+    </property>
+
+```
+
 # Step 6 : format namenode
 ```
 hduser@master: hdfs namenode -format
