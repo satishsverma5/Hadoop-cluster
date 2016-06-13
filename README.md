@@ -102,7 +102,12 @@ ubuntu@master:~$ sudo mkdir -p /data/hadoop-data/snn
 ubuntu@master:~$ sudo mkdir -p /data/hadoop-data/dn 
 ubuntu@master:~$ sudo mkdir -p /data/hadoop-data/mapred/system 
 ubuntu@master:~$ sudo mkdir -p /data/hadoop-data/mapred/local
+
+ubuntu@master:~$ sudo mkdir -p /data/tmp/spark-events
+
 ubuntu@master:~$ sudo chown -R hduser.hadoop /data/hadoop-data
+ubuntu@master:~$ sudo chown -R hduser.hadoop /data/tmp
+
 ```
 
 ### STEP-4. Configure Variables in hduser
@@ -129,6 +134,14 @@ export YARN_CONF_DIR=$HADOOP_INSTALL/etc/hadoop
 export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_INSTALL/lib/native
 export HADOOP_OPTS="-Djava.library.path=$HADOOP_INSTALL/lib"
 #HADOOP VARIABLES END
+
+#SPARK VARIABLES START 
+# export HADOOP_HOME=/opt/hadoop
+export SPARK_HOME=/opt/spark
+# export PATH=$PATH:$SPARK_HOME/bin
+# export PATH=$PATH:$SPARK_HOME/sbin
+#SPARK VARIABLES END
+
 ```
 Reload Configuration using below command.
 ```
@@ -157,6 +170,12 @@ hduser@master: vim /opt/hadoop/etc/hadoop/core-site.xml
         <value>hdfs://master:9000</value>
     </property>
 
+    <property>
+        <name>ha.zookeeper.quorum</name>
+        <value>master:2181,slave1:2181,slave2:2181,slave3:2181,slave4:2181,slave5:2181,slave6:2181,slave7:2181,slave8:2181</value>
+    </property>
+
+
 ```
 Modify mapred-site.xml on Master node only with following options.
 ```
@@ -164,29 +183,52 @@ hduser@master: vim /opt/hadoop/etc/hadoop/mapred-site.xml
 
 # Insert between "<configuration>  </configuration>" tags:
 
-  <property>
-        <name>mapreduce.jobtracker.http.address</name>
-        <value>master.dev.NZ.com:50030</value>
-        <description>The host and port that the MapReduce job tracker runs
-            at.  If "local", then jobs are run in-process as a single map
-            and reduce task.
-        </description>
+    <property>
+     <name>mapreduce.jobtracker.http.address</name>
+     <value>master:50030</value>
+      <description>The host and port that the MapReduce job tracker runs
+      at.  If "local", then jobs are run in-process as a single map
+      and reduce task.
+      </description>
     </property>
 
     <property>
         <name>mapreduce.framework.name</name>
         <value>yarn</value>
     </property>
+
+    <property>
+        <name>mapreduce.application.classpath</name>
+        <value>/opt/hadoop/share/hadoop/mapreduce/*,/opt/hadoop/share/hadoop/mapreduce/lib/*,/opt/hadoop/share/hadoop/tools/lib/*</value>
+   </property>
+
 ```
 Modify hdfs-site.xml on Master and Slave Nodes. Before that, as hduser, create the following directories on all the nodes, master and slaves.
+
 ```
-cd /home/hduser/hadoop
-hduser@ubuntu:/home/hduser/hadoop$ mkdir -p ./yarn_data/hdfs/namenode
-hduser@ubuntu:/home/hduser/hadoop$ mkdir -p ./yarn_data/hdfs/datanode
+    <property>
+        <name>dfs.replication</name>
+        <value>2</value>
+        <description>Default block replication</description>
+    </property>
+    <property>
+        <name>dfs.namenode.name.dir</name>
+        <value>file:///data/hadoop-data/nn</value>
+        <description>Directory for storing metadata by namenode</description>
+    </property>
+    <property>
+        <name>dfs.datanode.data.dir</name>
+        <value>file:///data/hadoop-data/dn</value>
+        <description>Directory for storing blocks by datanode</description>
+    </property>
+    <property>
+        <name>dfs.namenode.checkpoint.dir</name>
+        <value>file:///data/hadoop-data/snn</value>
+    </property>
 ```
 
 ```
-$ hdfs namenode -format
+hduser@master: hdfs namenode -format
 ```
 # Step 7 : Commands for starting and stopping Hadoop Cluster
 
@@ -213,16 +255,16 @@ Data Node 2: http://slave1:50075/
 
 
 create topic (sample1)
-./bin/kafka-topics.sh --create --zookeeper master.dev.NZ.com:2181 --replication-factor 1 --partitions 1 --topic sample1
+./bin/kafka-topics.sh --create --zookeeper master:2181 --replication-factor 3 --partitions 3 --topic sample1
 
 show topic list
-./bin/kafka-topics.sh --list --zookeeper master.dev.NZ.com:2181
+./bin/kafka-topics.sh --list --zookeeper master:2181
 
 produc message on topic sample1
-./bin/kafka-console-producer.sh --broker-list master.dev.NZ.com:9092  --topic sample
+./bin/kafka-console-producer.sh --broker-list master:9092  --topic sample1
 
 check message 
-./bin/kafka-console-consumer.sh --zookeeper master.dev.NZ.com:2181 --topic sample1 --from-beginning
+./bin/kafka-console-consumer.sh --zookeeper master:2181 --topic sample1 --from-beginning
 
 
 
