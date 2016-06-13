@@ -90,7 +90,7 @@ Below are the commands,
 ```
 ubuntu@master:~$ cd /opt/
 ubuntu@master:~$ sudo wget http://mirrors.sonic.net/apache/hadoop/common/hadoop-2.7.0/hadoop-2.7.0.tar.gz
-ubuntu@master:~$ sudo tar –xvf hadoop-2.7.0.tar.gz
+ubuntu@master:~$ sudo tar -xvf hadoop-2.7.0.tar.gz
 ubuntu@master:~$ sudo ln -s /opt/hadoop-2.7.0 /opt/hadoop
 ubuntu@master:~$ sudo chown hduser.hadoop /opt/hadoop
 ubuntu@master:~$ sudo chown hduser.hadoop /opt/hadoop-2.7.0
@@ -186,7 +186,7 @@ hduser@ubuntu:/home/hduser/hadoop$ mkdir -p ./yarn_data/hdfs/datanode
 ```
 
 ```
-$ hdfs namenode –format
+$ hdfs namenode -format
 ```
 # Step 7 : Commands for starting and stopping Hadoop Cluster
 
