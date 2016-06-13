@@ -226,7 +226,7 @@ Modify hdfs-site.xml on Master and Slave Nodes. Before that, as hduser, create t
         <value>file:///data/hadoop-data/snn</value>
     </property>
 ```
-
+# Step 6 : format namenode
 ```
 hduser@master: hdfs namenode -format
 ```
@@ -254,17 +254,28 @@ Data Node 1: http://master:50075/
 Data Node 2: http://slave1:50075/
 
 
-create topic (sample1)
-./bin/kafka-topics.sh --create --zookeeper master:2181 --replication-factor 3 --partitions 3 --topic sample1
 
-show topic list
-./bin/kafka-topics.sh --list --zookeeper master:2181
 
-produc message on topic sample1
+
+
+
+create topic (sample1).
+./bin/kafka-topics.sh --create --zookeeper master:2181,slave1:2181 --replication-factor 3 --partitions 3 --topic sample1
+
+show all topic list.
+./bin/kafka-topics.sh --list --zookeeper master:2181,slave1:2181
+
+shows all of the topics and offsets of partitions.
+./bin/kafka-topics.sh --zookeeper master:2181,slave1:2181 --describe
+
+produc message on topic sample1.
 ./bin/kafka-console-producer.sh --broker-list master:9092  --topic sample1
 
-check message 
-./bin/kafka-console-consumer.sh --zookeeper master:2181 --topic sample1 --from-beginning
+consume and check message.
+./bin/kafka-console-consumer.sh --zookeeper master:2181,slave1:2181 --topic sample1 --from-beginning
+
+delete topic
+./bin/kafka-topics.sh --delete --zookeeper master:2181,slave1:2181 --topic sample1
 
 
 
